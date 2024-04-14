@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+option csharp_namespace = "gRPC_Server";
+
+
+
+service UserGRPCService {
+
+	rpc	CreateUser (UserCreateRequest) returns (UserCreateResponse);
+	rpc	DeleteUser (UserDeleteRequest) returns (UserDeleteResponse);
+	rpc	UpdateUser (UserUpdateRequest) returns (UserUpdateResponse);
+	rpc ReadUser (UserReadRequest) returns (UserReadResponse);
+	rpc GetUsers (EmptyRequest) returns (Users);
+
+}
+
+message Credential {
+	string username = 1;
+	string password = 2;
+}
+
+message Users {
+	repeated User users = 1;
+}
+
+message Task{
+	string title = 1 ;
+	string description = 2;
+}
+message Tasks{
+	repeated Task tasks =1 ;
+}
+
+message Contact {
+	string email = 1;
+	string phoneNumber =2;
+}
+message Addresses {
+	repeated Address addresses = 1;
+}
+message Address {
+	string street = 1;
+	string district = 2;
+	string city = 3;
+	string country = 4;
+}
+
+message User {
+	string id =1;
+	string name =2;
+	string surname =3;
+	int32 age =4;
+
+	repeated Task tasks =5;
+	Credential credential =6;
+	Contact contact = 7;
+	repeated Address addresses =8;
+}
+
+message EmptyRequest{
+}
+
+message UserReadRequest {
+	string id = 1;
+}
+
+message UserReadResponse {
+	User user = 1;
+
+}
+
+message UserUpdateRequest{
+	User user = 1;
+}
+
+message UserUpdateResponse {
+	bool isUpdated = 1;
+}
+
+message UserCreateRequest{
+	User user = 1;
+
+}
+
+message UserCreateResponse {
+	bool isUpdated = 1;
+
+}
+message UserDeleteRequest {
+	string id = 1;
+
+}
+
+message UserDeleteResponse {
+	bool isDeleted = 1;
+}
