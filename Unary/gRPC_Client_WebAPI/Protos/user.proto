@@ -11,9 +11,25 @@ service UserGRPCService {
 	rpc	UpdateUser (UserUpdateRequest) returns (UserUpdateResponse);
 	rpc ReadUser (UserReadRequest) returns (UserReadResponse);
 	rpc GetUsers (EmptyRequest) returns (Users);
+	rpc RemoveTaskToUserById(RemoveTaskToUserByIdRequest) returns(RemoveTaskToUserByIdResponse);
+	rpc AddTaskToUserById(AddTaskToUserByIdRequest) returns(AddTaskToUserByIdResponse);
 
 }
+message AddTaskToUserByIdResponse {
+	bool isAdded = 1;
+}
+message AddTaskToUserByIdRequest {
+	string id =1 ;
+	Task task =2;
+}
 
+message RemoveTaskToUserByIdRequest{
+	string id =1;
+	Task task = 2;
+}
+message RemoveTaskToUserByIdResponse{
+	bool isRemoved = 1;
+}
 message Credential {
 	string username = 1;
 	string password = 2;

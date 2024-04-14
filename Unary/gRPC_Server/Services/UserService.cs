@@ -86,5 +86,38 @@ namespace gRPC_Server.Services
             };
         }
 
+        public override async Task<AddTaskToUserByIdResponse> AddTaskToUserById(AddTaskToUserByIdRequest request, ServerCallContext context)
+        {
+            _logger.LogInformation(request.Id);
+            _logger.LogInformation(JsonSerializer.Serialize(request.Task));
+
+            var task = _mapper.Map<shared_entities.Task>(request.Task);
+
+            await _userRepository.AddTaskToUserByIdAsync(Guid.Parse(request.Id), task);
+
+            return new AddTaskToUserByIdResponse
+            {
+                IsAdded = true
+            };
+        }
+
+
+        public override async Task<RemoveTaskToUserByIdResponse> RemoveTaskToUserById(RemoveTaskToUserByIdRequest request, ServerCallContext context)
+        {
+            _logger.LogInformation(request.Id);
+            _logger.LogInformation(JsonSerializer.Serialize(request.Task));
+
+            _logger.LogInformation(request.Id);
+            _logger.LogInformation(JsonSerializer.Serialize(request.Task));
+
+            var task = _mapper.Map<shared_entities.Task>(request.Task);
+
+            await _userRepository.RemoveTaskToUserByIdAsync(Guid.Parse(request.Id), task);
+
+            return new RemoveTaskToUserByIdResponse
+            {
+                IsRemoved = true,
+            };
+        }
     }
 }

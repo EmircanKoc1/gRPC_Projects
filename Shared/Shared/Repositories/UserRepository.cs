@@ -2,6 +2,7 @@
 using Shared.Context;
 using Shared.Entities;
 using stt = System.Threading.Tasks;
+using shared_entities = Shared.Entities;
 
 namespace Shared.Repositories
 {
@@ -31,7 +32,7 @@ namespace Shared.Repositories
         public virtual async stt.Task<IEnumerable<User>> GetAllAsync()
             => await (await _collection.FindAsync(FilterDefinition<User>.Empty)).ToListAsync();
 
-        public async Task<User> AddTaskToUserByIdAsync(Guid id, stt.Task task)
+        public async Task<User> AddTaskToUserByIdAsync(Guid id, shared_entities.Task task)
         {
             var filter = Builders<User>.Filter.Eq(x => x.Id, id.ToString());
 
@@ -42,7 +43,7 @@ namespace Shared.Repositories
             return user;
         }
 
-        public async Task<User> RemoveTaskToUserByIdAsync(Guid id, stt.Task task)
+        public async Task<User> RemoveTaskToUserByIdAsync(Guid id, shared_entities.Task task)
         {
             var filter = Builders<User>.Filter.Eq(x => x.Id, id.ToString());
 
