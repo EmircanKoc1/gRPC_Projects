@@ -4,9 +4,9 @@ using shared_entities = Shared.Entities;
 
 namespace gRPC_Client_WebAPI.MapProfile
 {
-    public class UserClientMapProfile : Profile
+    public class UserMapProfile : Profile
     {
-        public UserClientMapProfile()
+        public UserMapProfile()
         {
 
             CreateMap<shared_entities.User, grpc_entities.User>()
