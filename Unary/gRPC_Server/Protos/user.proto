@@ -21,23 +21,19 @@ message Credential {
 
 message Users {
 	repeated User users = 1;
+	
 }
 
 message Task{
 	string title = 1 ;
 	string description = 2;
 }
-message Tasks{
-	repeated Task tasks =1 ;
-}
 
 message Contact {
 	string email = 1;
 	string phoneNumber =2;
 }
-message Addresses {
-	repeated Address addresses = 1;
-}
+
 message Address {
 	string street = 1;
 	string district = 2;
@@ -70,7 +66,7 @@ message UserReadResponse {
 }
 
 message UserUpdateRequest{
-	User user = 1;
+	User User = 1;
 }
 
 message UserUpdateResponse {
@@ -83,7 +79,7 @@ message UserCreateRequest{
 }
 
 message UserCreateResponse {
-	bool isUpdated = 1;
+	bool isCreated = 1;
 
 }
 message UserDeleteRequest {

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Grpc.Core;
+
 using Shared.Repositories;
+using System.Text.Json;
 using shared_entities = Shared.Entities;
 
 namespace gRPC_Server.Services
@@ -19,34 +21,69 @@ namespace gRPC_Server.Services
 
         public override async Task<UserCreateResponse> CreateUser(UserCreateRequest request, ServerCallContext context)
         {
+            _logger.LogInformation(JsonSerializer.Serialize(request.User));
+
             var user = _mapper.Map<shared_entities.User>(request.User);
             await _userRepository.AddAsync(user);
 
             return new UserCreateResponse
             {
-                IsUpdated = true,
+                IsCreated = true,
             };
         }
 
-        public override Task<UserDeleteResponse> DeleteUser(UserDeleteRequest request, ServerCallContext context)
+        public override async Task<UserDeleteResponse> DeleteUser(UserDeleteRequest request, ServerCallContext context)
         {
-            return base.DeleteUser(request, context);
+
+            _logger.LogInformation((request.Id));
+
+            var isDeleted = await _userRepository.DeleteAsync(Guid.Parse(request.Id));
+
+            return new UserDeleteResponse
+            {
+                IsDeleted = isDeleted,
+            };
         }
 
-        public override Task<Users> GetUsers(EmptyRequest request, ServerCallContext context)
+        public override async Task<Users> GetUsers(EmptyRequest request, ServerCallContext context)
         {
-            return base.GetUsers(request, context);
+            _logger.LogInformation("GetUsers");
+
+            var users = await _userRepository.GetAllAsync();
+            var list = _mapper.Map<IEnumerable<User>>(users);
+            var usersResponse = new Users();
+            usersResponse.Users_.AddRange(list);
+
+            return usersResponse;
         }
 
-        public override Task<UserReadResponse> ReadUser(UserReadRequest request, ServerCallContext context)
+        public override async Task<UserReadResponse> ReadUser(UserReadRequest request, ServerCallContext context)
         {
-            return base.ReadUser(request, context);
+            _logger.LogInformation(request.Id);
+
+            var user = await _userRepository.GetByIdAsync(Guid.Parse(request.Id));
+            var userReadResponse = new UserReadResponse();
+            userReadResponse.User = _mapper.Map<User>(user);
+
+            return userReadResponse;
+
+
         }
 
 
-        public override Task<UserUpdateResponse> UpdateUser(UserUpdateRequest request, ServerCallContext context)
+        public async override Task<UserUpdateResponse> UpdateUser(UserUpdateRequest request, ServerCallContext context)
         {
-            return base.UpdateUser(request, context);
+            _logger.LogInformation(JsonSerializer.Serialize(request.User));
+
+            var id = request.User.Id;
+            var user = _mapper.Map<shared_entities.User>(request.User);
+
+            var isUpdated = await _userRepository.UpdateAsync(user);
+
+            return new UserUpdateResponse
+            {
+                IsUpdated = isUpdated
+            };
         }
 
     }

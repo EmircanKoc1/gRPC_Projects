@@ -1,3 +1,6 @@
+using Grpc.Net.Client;
+using gRPC_Server;
+
 namespace gRPC_Client_WebAPI
 {
     public class Program
@@ -10,6 +13,13 @@ namespace gRPC_Client_WebAPI
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddAutoMapper(typeof(Program));
+
+            builder.Services.AddSingleton<UserGRPCService.UserGRPCServiceClient>(x =>
+            new UserGRPCService.UserGRPCServiceClient(
+                 GrpcChannel.ForAddress(builder.Configuration.GetConnectionString("gRPC")))
+            );
 
             var app = builder.Build();
 

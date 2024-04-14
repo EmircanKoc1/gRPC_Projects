@@ -4,7 +4,7 @@ using Shared.Settings;
 
 namespace Shared.Context
 {
-    public class MongoDbContext
+    public  class MongoDbContext
     {
         protected IMongoDatabase _database;
 
